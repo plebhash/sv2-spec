@@ -11,20 +11,11 @@ This repository contains the Stratum protocol specification. It encompasses both
 - [3. Protocol Overview](./v1/0todo.md)
   - [3.1 Methods (client to server)](./v1/todo.md#todo)
   - [3.2 Methods (server to client)](./v1/todo.md#todo)
-  - [3.3 Data Types Mapping](./v1/todo.md#todo)
-  - [3.2 Framing](./v1/todo.md#todo)
-  - [3.4 Protocol Extensions](./v1/todo.md#todo)
 - [4. Protocol Security](./v1/todo.md)
 - [5. Message Types](./v1/todo.md)
 - [6. Extensions](./v1/todo.md)
 - [7. Discussion](./v1/todo.md)
-  - [7.1 Notes](./v1/todo.md#todo)
-  - [7.2 Usage Scenarios](./v1/todo.md#todo)
-    - [7.2.1 End Device](./v1/todo.md#todo)
-    - [7.2.2 Difficulty Aggregating Proxy](./v1/todo.md#todo)
-    - [7.2.3 Proxy](./v1/todo.md#todo)
-  - [7.3 Terminology](./v1/todo.md#todo)
-
+- 
 ### V1 Authors
 SRI Community <todo@todo>
 Marek “Slush” Palatinus <todo@todo>
