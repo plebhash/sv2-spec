@@ -126,12 +126,16 @@ Sent by the Server in response to a `DeclareMiningJob` message indicating it det
 
 Sent by the Client in response to an `IdentifyTransactions` message to provide the full set of transaction data hashes.
 
+xxx todo xxx elaborate on mempool
+
 | Field Name | Data Type      | Description                                                                                                        |
 | ---------- | -------------- | ------------------------------------------------------------------------------------------------------------------ |
 | request_id | U32            | Unique identifier for the pairing response to the DeclareMiningJob/IdentifyTransactions message                     |
 | tx_data_hashes | SEQ0_64K[U256] | The full list of transaction data hashes used to build the mining job in the corresponding DeclareMiningJob message |
 
 ### 6.3.9 `ProvideMissingTransactions` (Server->Client)
+
+xxx todo xxx
 
 | Field Name               | Data Type     | Description                                                                                                                                                                                                                              |
 | ------------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -148,6 +152,11 @@ This is a message to push transactions that the server did not recognize and req
 
 ### 6.3.11 `SubmitSolution` (Client -> Server)
 
+Sent by JDC as soon as a valid block is found, so that it can be propagated also by JDS.
+
+In the meantime, the block is also transmitted to the network by JDC through the `SubmitSolution` message under in Template Distribution Protocol.
+
+In this way, a valid solution is immediately propagated on both client and server sides.
 
 | Field Name                              | Data Type | Description                                                                                                                                                                                                                                                                                |
 | --------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
