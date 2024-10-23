@@ -165,3 +165,47 @@ In this way, a valid solution is immediately propagated on both client and serve
 | nonce                                   | U32       | Nonce leading to the hash being submitted                                                               |
 | ntime                                   | U32       | The nTime field in the block header.                                                                    |
 | nbits                                   | U32       | Block header field                                                                                      |
+
+## 6.4 Job Declaration Protocol Message Flow
+
+This section presents some diagrams illustrating the message flow under the Job Declaration Protocol.
+
+The following messages are omitted for simplicity:
+- `SetupConnection` and `SetupConnection.Success` between all roles.
+- `OpenExtendedMiningChannel` and `OpenExtendedMiningChannel.Success` between JDC and Pool.
+
+Nevertheless, it should be noted that:
+- Downstream connects to JDC while setting the `protocol` field of `SetupConnection` to `0` (Mining Protocol). 
+- JDC connects to JDS while:
+  - setting the `protocol` field of `SetupConnection` to `1` (Job Declaration Protocol).
+  - potentially setting the `REQUIRES_ASYNC_JOB_MINING` bit flag of `SetupConnection` (which defines whether Jobs will be declared asynchronously).
+- JDC connects to TP while setting the `protocol` field of `SetupConnection` to `2` (Template Distribution Protocol).
+- JDC connects to Pool while:
+  - setting the `protocol` field of `SetupConnection` to `0` (Mining Protocol). 
+  - setting the `REQUIRES_WORK_SELECTION` bit flag of `SetupConnection`.
+  - sending a `OpenExtendedMiningChannel` (where `SetCustomMiningJob` and `SubmitSharesExtended` messages will be sent).
+- JDS only connects to a Bitcoin Node via RPC (not via Template Distribution Protocol).
+
+### 6.4.1 Synchronous Job Declaration
+
+Under synchronous Job Declaration, JDC waits until it gets a `DeclareMiningJob.Success` confirmation before it sends `SetCustomMiningJob` to Pool.
+
+![](./img/jd_message_flow_sync.png)
+
+### 6.4.2 Asynchronous Job Declaration
+
+Under asynchronous Job Declaration, JDC **does not** wait until it gets a `DeclareMiningJob.Success` confirmation before it sends `SetCustomMiningJob` to Pool.
+
+As soon as it receives an `AllocateMiningJobToken.Success` (and there is a Template available), it will send `SetCustomMiningJob` right away.
+
+![](./img/jd_message_flow_async.png)
+
+### 6.4.3 Solution Submission
+
+The diagram below shows how a valid block is propagated by JDC and JDS.
+
+Upon receiving a share with the valid block, JDC immediately sends a `SubmitSolution` message both to TP and JDS.
+
+JDS then submits this block to its Bitcoin Node over RPC.
+
+![](./img/jd_message_flow_solution.png)
