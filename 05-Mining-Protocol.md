@@ -349,6 +349,8 @@ The message is the same as `SubmitSharesStandard`, with the following additional
 
 For extended channels, the `ntime` constraint from `SubmitSharesStandard` also applies, with the `min_ntime` potentially supplied by `NewExtendedMiningJob` (for immediately active jobs) or `SetCustomMiningJob`.
 
+When submitting work for a custom job, `job_id` MUST be the identifier returned by `SetCustomMiningJob.Success`.
+
 ### 5.3.13 `SubmitShares.Success` (Server -> Client)
 
 Response to `SubmitSharesStandard` or `SubmitSharesExtended`, accepting results from the miner.
