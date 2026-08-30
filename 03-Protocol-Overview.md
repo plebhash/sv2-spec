@@ -245,6 +245,7 @@ Server MUST respond with either a `SetupConnection.Success` or `SetupConnection.
 If the `protocol` field contains a value other than 0, 1, or 2, the server MUST respond with `SetupConnection.Error`.
 If `min_version` is greater than `max_version`, or if `max_version` is less than 2, or if `min_version` is greater than 2, the server MUST respond with `SetupConnection.Error`.
 If a client sets a flag bit the server does not support, the server MUST respond with `SetupConnection.Error` with the unsupported bits set in the error's `flags` field, consistent with the probe mechanism described in §3.6.3.
+The feature set in effect for a connection is the combination of both sides' declared requirements: by responding with `SetupConnection.Success` the server commits to satisfying the client's flags, and by proceeding on the connection the client commits to the server's.
 Clients that are not configured to provide telemetry data to the upstream node SHOULD set `device_id` to 0-length strings.
 However, they MUST always set vendor to a string describing the manufacturer/developer and firmware version and SHOULD always set `hardware_version` to a string describing, at least, the particular hardware/software package in use.
 
