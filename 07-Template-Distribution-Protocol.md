@@ -95,7 +95,7 @@ Please note that Bitcoin Core establishes a floor value of 2000 weight units.
 
 ## 7.3 `NewTemplate` (Server -> Client)
 
-The primary template-providing function. Note that the `coinbase_tx_outputs` bytes will appear as is at the end of the coinbase transaction.
+The primary template-providing message. Note that the `coinbase_tx_outputs` bytes will appear as is at the end of the coinbase transaction.
 
 | Field Name                  | Data Type      | Description                                                                                                                                                                                                                                                                        |
 | --------------------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
