@@ -29,7 +29,8 @@ Meanwhile, there are five possible roles (types of software/hardware) for commun
    Produces jobs (for those not declaring jobs via the Job Declaration Protocol), validates shares, and ensures blocks found by clients are propagated through the network (though clients which have full block templates MUST also propagate blocks into the Bitcoin P2P network).
 
 3. **Mining Proxy (optional)**  
-   Sits in between Mining Device(s) and Pool Service, aggregating connections for efficiency.
+   Sits in between Mining Device(s) and a Mining Server, aggregating connections for efficiency.
+   Here, and throughout this document, *Mining Server* is a generic term for the upstream end of a Mining Protocol connection — e.g. a Pool Service, a Job Declarator Client serving declared work, or another Mining Proxy.
    May optionally provide additional monitoring, receive work from a Job Declarator and use custom work with a pool, or provide other services for a farm.
 
 4. **Job Declarator (optional)**  
@@ -40,7 +41,7 @@ Meanwhile, there are five possible roles (types of software/hardware) for commun
    Generates custom block templates to be passed to the Job Declarator for eventual mining.
    This is usually just a Bitcoin Core full node (or possibly some other node implementation).
 
-The Mining Protocol is used for communication between a Mining Device and Pool Service, Mining Device and Mining Proxy, Mining Proxy and Mining Proxy, or Mining Proxy and Pool Service.
+The Mining Protocol is used for communication between a Mining Device or Mining Proxy and a Mining Server.
 
 The Job Declaration Protocol is used for communication between a Job Declarator Client and a Job Declarator Server (which is typically Pool side).
 
