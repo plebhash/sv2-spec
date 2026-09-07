@@ -270,7 +270,7 @@ Length: 74 bytes
 | SIGNATURE_NOISE_MESSAGE | Signed message containing Responder's static key. Signature is issued by authority that is generally known to operate the server acting as the Noise responder |
 | MAC                     | Message authentication code for SIGNATURE_NOISE_MESSAGE                                                                                                        |
 
-Message length: 170 bytes
+Message length: 234 bytes
 
 #### 4.5.2.2 Initiator
 
