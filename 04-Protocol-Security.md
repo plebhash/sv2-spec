@@ -216,9 +216,9 @@ Initiator generates ephemeral keypair and sends the public key to the responder:
 
 ##### Ephemeral public key message:
 
-| Field name | Description                      |
-| ---------- | -------------------------------- |
-| PUBKEY     | Initiator's ephemeral public key |
+| Field name      | Description                      |
+| --------------- | -------------------------------- |
+| ELLSWIFT_PUBKEY | Initiator's ephemeral public key |
 
 Message length: 64 bytes
 
@@ -264,13 +264,13 @@ Length: 74 bytes
 
 | Field name              | Description                                                                                                                                                    |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| PUBKEY                  | Responder's plaintext ephemeral public key                                                                                                                     |
-| PUBKEY                  | Responder's encrypted static public key                                                                                                                        |
+| ELLSWIFT_PUBKEY         | Responder's plaintext ephemeral public key                                                                                                                     |
+| ELLSWIFT_PUBKEY         | Responder's encrypted static public key                                                                                                                        |
 | MAC                     | Message authentication code for responder's static public key                                                                                                  |
 | SIGNATURE_NOISE_MESSAGE | Signed message containing Responder's static key. Signature is issued by authority that is generally known to operate the server acting as the Noise responder |
 | MAC                     | Message authentication code for SIGNATURE_NOISE_MESSAGE                                                                                                        |
 
-Message length: 170 bytes
+Message length: 234 bytes
 
 #### 4.5.2.2 Initiator
 
