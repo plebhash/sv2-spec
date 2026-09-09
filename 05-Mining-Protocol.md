@@ -343,6 +343,8 @@ The message is the same as `SubmitShares`, with the following additional field:
 | `<SubmitSharesStandard message fields>` |
 | extranonce                              | B0_32     | Extranonce bytes which need to be added to coinbase to form a fully valid submission (full coinbase = coinbase_tx_prefix + extranonce_prefix + extranonce + coinbase_tx_suffix). The size of the provided extranonce MUST be equal to the negotiated extranonce size from channel opening. |
 
+For extended channels, the `ntime` constraint from `SubmitSharesStandard` also applies, with the `min_ntime` potentially supplied by `NewExtendedMiningJob` (for immediately active jobs) or `SetCustomMiningJob`.
+
 ### 5.3.13 `SubmitShares.Success` (Server -> Client)
 
 Response to `SubmitShares` or `SubmitSharesExtended`, accepting results from the miner.
