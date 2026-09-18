@@ -34,7 +34,7 @@ Meanwhile, there are five possible roles (types of software/hardware) for commun
 
 4. **Job Declarator (optional)**  
    It is further divided into a Job Declarator Client and a Job Declarator Server.
-   The Job Declarator Client receives custom block templates from a Template Provider and declares use of them with the Job Declarator Server (which is typically Pool side) using the Job Declaration Protocol.
+   The Job Declarator Client receives custom block templates from a Template Provider and declares use of them with the Job Declarator Server using the Job Declaration Protocol.
 
 5. **Template Provider**  
    Generates custom block templates to be passed to the Job Declarator for eventual mining.
@@ -42,7 +42,7 @@ Meanwhile, there are five possible roles (types of software/hardware) for commun
 
 The Mining Protocol is used for communication between a Mining Device and Pool Service, Mining Device and Mining Proxy, Mining Proxy and Mining Proxy, or Mining Proxy and Pool Service.
 
-The Job Declaration Protocol is used for communication between a Job Declarator Client and a Job Declarator Server (which is typically Pool side).
+The Job Declaration Protocol is used for communication between a Job Declarator Client and a Job Declarator Server.
 
 The Template Distribution Protocol is used for communication either between a Job Declarator Client and a Template Provider or between a Pool Service and Template Provider.
 

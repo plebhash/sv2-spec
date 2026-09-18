@@ -8,7 +8,7 @@ This is a key feature of Stratum V2 that improves Bitcoin decentralization.
 
 ## 6.1 Job Declarator Server
 
-The Job Declarator Server (JDS) is deployed on Pool side, although it could be theoretically outsourced to a third party that is trusted by the Pool.
+The Job Declarator Server (JDS) is deployed on Pool side.
 
 In order to fully implement the Server side of the Job Declaration Protocol, the JDS also needs to exchange RPCs (or similar) with a Bitcoin Node. 
 
@@ -212,11 +212,9 @@ Differently from `NewExtendedMiningJob`, if the original coinbase is a SegWit tr
 
 A response sent by JDS acknowledging some Custom Job declaration.
 
-JDS MAY request txdata via `ProvideMissingTransactions` before making this commitment.
+JDS MAY request txdata via `ProvideMissingTransactions` before acknowledging the declaration.
 
-Since JDS could be third party (not necessarily integrated to Pool), `DeclareMiningJob.Success.new_mining_job_token` MAY carry a cryptographic commitment from JDS where:
-- JDS acknowledges that the template declared under `DeclareMiningJob.mining_job_token` is valid
-- it signals to JDC that it should use `SetCustomMininingJob.mining_job_token = DeclareMiningJob.Success.new_mining_job_token` when declaring Custom Jobs to Pool as a way to prove it went through the Full-Template declaration process
+`DeclareMiningJob.Success.new_mining_job_token` identifies the declared Custom Job: JDC uses it as `SetCustomMiningJob.mining_job_token` when notifying the Pool of Custom Jobs declared under Full-Template mode.
 
 | Field Name           | Data Type | Description                         |
 | -------------------- | --------- |-------------------------------------|
