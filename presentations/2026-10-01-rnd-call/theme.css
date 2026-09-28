@@ -31,6 +31,8 @@ code { background: var(--border); color: var(--cyan-light); padding: 0 .3em; bor
 hr { border: 0; border-top: 1px solid var(--border); }
 section::after { color: var(--muted); font-size: .6em; }   /* page number */
 
+section.dense { font-size: 25px; }
+.note { font-size: .75em; color: var(--muted); }
 section.title { justify-content: center; text-align: center; }
 section.title h1 { font-size: 2.6em; margin: .2em 0; }
 section.title p { color: var(--muted); }
