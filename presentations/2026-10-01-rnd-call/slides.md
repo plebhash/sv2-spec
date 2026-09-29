@@ -183,3 +183,17 @@ Keep it neutral on the slide; the room decides. Points to have ready if asked. T
 I'm not in a rush to answer these questions.
 
 For now, they remain open for us to explore over the next months.
+
+---
+
+# asserting **spec compliance**
+
+SRI is spec-compliant when:
+**A.** it never does what the spec forbids. No broken invariants.
+**B.** it does everything the spec requires. No missing behaviour.
+
+I. **Fuzzing of SRI** maps SRI with regards to A and B.
+II. **Integration Tests** catch regressions, and CI enforces they're not unintentionally re-introduced.
+III. **Interoperability Tests** map Sv2 ecosystem (3rd party implementations that potentially diverge from SRI) with regards to A and B.
+
+I and III also surface potential spec gaps, which is an argument against FV, except they only find the gaps someone has already tripped over.
