@@ -184,6 +184,14 @@ All of them also surface potential spec gaps, **feeding back** into our journey 
 
 ---
 
+![bg contain](img/yin-yang.png)
+
+<!--
+Compliance and completeness are two halves of one thing. A compliant implementation is only as meaningful as the spec it complies with, and a complete spec is only as real as the implementations that follow it. Each contains a seed of the other: interop divergences between compliant implementations are where gaps show up, and closing a gap changes what compliance means. The third promise bullet, drawn.
+-->
+
+---
+
 <!-- _class: center -->
 
 # **paths** to a complete spec
