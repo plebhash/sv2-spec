@@ -33,6 +33,8 @@ section::after { color: var(--muted); font-size: .6em; }   /* page number */
 
 section.dense { font-size: 25px; }
 .note { font-size: .75em; color: var(--muted); }
+.pro { color: #22c55e; font-weight: 600; }
+.con { color: #ef4444; font-weight: 600; }
 section.center img { display: block; margin: 0 auto; }
 section.title { justify-content: center; text-align: center; }
 section.title h1 { font-size: 2.6em; margin: .2em 0; }

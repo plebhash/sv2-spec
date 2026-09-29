@@ -26,9 +26,19 @@ plebhash · SRI R&D call · 2026-10-01
 
 ---
 
+<!-- _class: center -->
+
 ## Penrose's 3 worlds
 
-![h:420](https://astudentforever.wordpress.com/wp-content/uploads/2015/03/three-worlds-roger-penrose.jpg) ![h:420](https://i.ibb.co/PK1gRn9/penrose3world.jpg)
+![h:500](img/penrose-1.jpg)
+
+---
+
+<!-- _class: center -->
+
+## Penrose's 3 worlds
+
+![h:500](img/penrose-2.jpg)
 
 ---
 
@@ -51,18 +61,19 @@ In this talk, I want to convince you that:
 
 ---
 
-Three words to define:
+A few words to define:
 - **specification**
 - **completeness**
 - **formal verification**
+- **compliance**
 
 ---
 
 <!-- _class: dense -->
 
-# specification
+# **specification**
 
-A body of English prose, written and read by humans and AI agents. This is where the protocol first **exists**: it is drafted here, and reasoned about here.
+A body of English prose, written and read/interpreted by humans (and AI agents). This is where the protocol first **exists**: it is drafted here, and reasoned about here.
 
 It defines the **objects** of the protocol and the rules that bind them:
 
@@ -82,7 +93,7 @@ Say the Sv2 instances out loud: actors are mining device, proxy, pool, template 
 
 ---
 
-# (consistent) completeness
+# (consistent) **completeness**
 
 - **Completeness**: for every reachable state and every message, the text says **what happens next**. A complete protocol spec has **no gaps**.
 
@@ -98,7 +109,7 @@ The pair "complete and consistent" is Hilbert's program (1920s): give all of mat
 
 ---
 
-# completeness ≠ no freedom
+# completeness **≠ no freedom**
 
 Complete does not mean no freedom of implementation. A choice the text grants explicitly is a **MAY** (RFC2119), not a **gap**.
 
@@ -113,7 +124,7 @@ Contrast with a gap: there both readers are also "compliant", but by accident, b
 
 <!-- _class: dense -->
 
-# formal verification
+# **formal verification**
 
 English is **interpreted**. Two careful readers can disagree, and both be right about the text (even if they're AI agents). That is what a **gap** is.
 
@@ -121,12 +132,9 @@ English is **interpreted**. Two careful readers can disagree, and both be right 
 
 In languages such as TLA+, the spec becomes a body of **formulae** (logical, not arithmetic) that say which state transitions the protocol allows. That body of formulae constitutes a **model**.
 
-**Formal verification** means running a **model checker**. This process is deterministic and exhaustive, as it walks **every reachable state**:
+**Formal verification** (FV) means running a **model checker** (e.g.: TLC). This process is deterministic and exhaustive, as it walks **every reachable state**:
 - a state with no next step is a gap
 - a broken invariant is a contradiction
-
-<span class="note">Note: what no model checker can assert: whether the model says what we **meant**.
-Model checkers verify, humans validate.</span>
 
 <!--
 Formal verification demystified: not proving code correct, but writing the protocol a second time in a notation a machine can exhaustively explore (formalization), then letting the machine explore it (verification). Lamport's point is that a TLA+ spec is a formula: initial state, and at every step one of the allowed transitions. Nothing new: AWS, Paxos, Raft were checked this way. TLC literally reports a state with no enabled action as a "deadlock", the mechanical detector for silent gaps. The English and formal texts are mirrors of the same protocol; where they disagree, one of them has a gap. The verify/validate split is the principled reason humans stay in the loop: the formula has no oracle for intent but us.
@@ -140,16 +148,69 @@ Formal verification demystified: not proving code correct, but writing the proto
 Formal verification in one picture. Left: the same English text, two careful readers, two different diagrams. That is interpretation, and the difference between the diagrams is a gap. Right: the same text rewritten as a formula, a block of notation with one meaning, and the formula unfolded into every state it allows, walked by a checker with no imagination involved. The two amber spots are what it reports: an arrow that leads nowhere is a state with no next step, a gap; a node whose arrows point at clashing targets is a broken invariant, a contradiction.
 -->
 
+---
+
+# FV: **silver bullet (?)**
+
+FV is arguably the only way we can **assert spec completeness** in a **deterministic** and **exhaustive** manner.
+
+LLMs are merely stochastic interpreters. Increasingly better every day, but still fundamentally limited for asserting completeness.
 
 ---
 
-# is formal verification worth the effort?
+# FV: **fundamental limitations**
+
+The assertion of spec completeness is only as good as the model. **Model nonsense, and we're verifying nonsense.**
+
+And it only ever checks **small setups**: the checker walks every state, but only for sizes fixed up front (e.g.: 2 channels and 3 queued jobs).
+
+Anything too big, the number of states explodes and verification becomes **infeasible**.
+
+---
+
+# spec **compliance**
+
+An **implementation** is **spec-compliant** when:
+**A.** it never does what the spec forbids. No broken invariants.
+**B.** it does everything the spec requires. No missing behaviour.
+
+A few techniques already established around SRI:
+
+I. **Fuzzing** maps SRI with regards to spec compliance.
+II. **Interoperability Tests** map Sv2 ecosystem (3rd party implementations that potentially diverge from SRI) with regards to spec compliance.
+III. **Integration Tests** catch regressions on SRI, and CI enforces they're not unintentionally re-introduced.
+
+All of them also surface potential spec gaps, **feeding back** into our journey towards **spec completeness**.
+
+---
+
+<!-- _class: center -->
+
+# **paths** to a complete spec
+
+![h:420](img/paths-neutral.svg)
+
+<span class="note">(*) "no gaps found" ≠ "no gaps": LLMs, fuzzing, interop and integration tests only find the gaps someone tripped over. And FV of spec completeness is only as good as the model. Model nonsense, and you're verifying nonsense.</span>
+
+<!--
+Four detectors, not four alternatives: they run in parallel and each needs something different first. LLM review needs nothing but the text. The model checker needs a formal model, which is the formalization cost. Fuzzing needs SRI. Interop tests need SRI and someone else's implementation, and they are the only detector that finds a gap the way the specification slide defined it: two compliant readers disagreeing. Everything converges on candidate gaps, and the one step no tool does is the diamond: deciding whether a candidate is a gap to close or freedom to keep as a MAY. That is a design choice, and it is where human hours go. A spec change then loops back. The exit is the complete spec, with a question mark on purpose. Two edges reach it with different weight: from the sampling detectors "nothing found" is evidence; from the checker "nothing reachable" is a fact for the checked sizes. The dashed "blind spots" edge from the formal model into the same node is the caveat: whatever the model left out, abstracted away, or got wrong about the English, the "complete" spec inherits. Model checkers verify; validating the model against what we meant is human work, done when the model is written or changed, not on every run. Attainable by any path, assertable only by the checker, and even that assertion is only as good as the model. Completeness is per version: a new feature reopens the loop. Not drawn: after a spec change the model and SRI both have to follow, or they drift; that is the maintenance cost the table warned about.
+-->
+
+---
+
+# is formal verification **worth the effort?**
 
 We have **LLM**s. They read the whole spec in seconds, for cents, and they get better every day.
 
 So if clankers can hunt gaps in the English directly, **why write the spec a second time (and maintain it), in a language none of us can read (e.g.: TLA+)?**
 
-Moreover, formal verification only ever checks **small setups**. The checker walks every state, but only for sizes fixed up front (e.g.: 2 channels and 3 jobs). Anything too big, the number of states explodes and verification becomes infeasible.
+Moreover, FV has limitations:
+- model sanity
+- verification complexity
+
+BUT: **FV is still** (arguably) **the only way we can assert completeness!**
+
+No easy answer, this is a **dilemma.**
 
 <!--
 State the counter-argument at full strength before answering it. This is the objection most of the room is already thinking, and Edil may raise the opposite one. No verdict here; the next slide is the table, and the room decides.
@@ -159,12 +220,12 @@ State the counter-argument at full strength before answering it. This is the obj
 
 <!-- _class: dense -->
 
-# arguments **for** vs **against** formal verification
+# arguments <span class="pro">for</span> vs <span class="con">against</span> formal verification
 
 | | **FV** | **no FV** |
 |---|---|---|
-| **for** | <ul><li>"no gap" becomes a fact (under small setup sizes)</li><li>a durable artefact, re-checked on every spec change (assuming the model is also updated)</li><li>writing the model surfaces ambiguity before any checking runs</li></ul> | <ul><li>KISS</li><li>comfort zone</li><li>easy to manage engineering efforts</li></ul> |
-| **against** | <ul><li>a second artefact that can drift from the English (extra maintenance burden)</li><li>none of us can write or review FV languages today</li><li>exhaustive only for small setups (e.g. 2 channels, 3 jobs); larger ones explode the state space</li><li>competes for the scarce resource: human hours</li></ul> | <ul><li>LLM = a stochastic reader, not a deterministic evaluator</li><li>"found no gap" ≠ "no gaps exist"</li><li>LLMs only "imagine" states, like humans</li><li>LLMs are prone to "hallucinations"</li><li> a closed gap can silently reopen and nobody is warned</li></ul> |
+| <span class="pro">for</span> | <ul><li>a durable artefact, re-checked on every spec change (assuming the model is also updated)</li><li>writing the model surfaces ambiguity before any checking runs</li><li>(arguably) **only way we can assert completeness**</li></ul> | <ul><li>KISS</li><li>comfort zone</li><li>**easy to manage engineering efforts**</li></ul> |
+| <span class="con">against</span> | <ul><li>a second artefact that can drift from the English (extra maintenance burden)</li><li>none of us can write or review FV languages today</li><li>verification size/complexity ceiling</li><li>**competes for the scarce resource: human hours**</li></ul> | <ul><li>LLM = a stochastic interpreter, not a deterministic evaluator</li><li>"found no gap" ≠ "no gaps exist"</li><li>LLMs only "imagine" states, like humans</li><li>LLMs are prone to "hallucinations"</li><li> a closed gap can silently reopen and nobody is warned</li><li>**no assertion of completeness**</li></ul> |
 
 <!--
 Keep it neutral on the slide; the room decides. Points to have ready if asked. The two are not substitutes: an LLM is a reader, in the same world as us on the Penrose picture; a model checker is an evaluator. LLMs lower the cost of the model path: they can draft TLA+ from the English, explain a counterexample trace in plain words, and flag where the English and the model disagree. The drift problem cuts both ways: an LLM review has no artefact to drift from, which is exactly why nothing accrues. The validate problem is identical on both paths: neither a reader nor a checker knows what we meant. Bounded checking is the honest ceiling. The checker walks every reachable state, but only for a finite instance: you pin the counts (channels, jobs in flight, queue depth) before running, and the state space multiplies with each extra actor or value, so runs go from seconds to never. "No gap found" therefore means "no gap up to those sizes"; a gap needing four jobs during a prev-hash change is outside a three-job walk. Why it is accepted anyway: the small-scope hypothesis, most protocol bugs come from interleavings of a few actors, not from large counts, and AWS found bugs at 3 to 5 nodes that years of testing at scale had missed. Confidence grows by raising the counts until nothing new appears. Unbounded claims need proofs (TLAPS), far costlier, not where Sv2 should start. Cost is the real argument against: the bottleneck is human hours, and the model path spends them up front.
@@ -174,7 +235,7 @@ Keep it neutral on the slide; the room decides. Points to have ready if asked. T
 
 # formal verification **open questions**
 
-- how much closer to completeness would FV really get us?
+- in which time horizon do we need spec completeness?
 - how much effort to translate the entire spec?
 - how much effort to translate parts of the spec (e.g.: subprotocols in isolation)?
 - how much effort to maintain the model (in face of spec changes)?
@@ -182,30 +243,14 @@ Keep it neutral on the slide; the room decides. Points to have ready if asked. T
 
 I'm not in a rush to answer these questions.
 
-For now, they remain open for us to explore over the next months.
-
----
-
-# asserting **spec compliance**
-
-SRI is spec-compliant when:
-**A.** it never does what the spec forbids. No broken invariants.
-**B.** it does everything the spec requires. No missing behaviour.
-
-I. **Fuzzing of SRI** maps SRI with regards to A and B.
-II. **Integration Tests** catch regressions, and CI enforces they're not unintentionally re-introduced.
-III. **Interoperability Tests** map Sv2 ecosystem (3rd party implementations that potentially diverge from SRI) with regards to A and B.
-
-I and III also surface potential spec gaps, which is an argument against FV, except they only find the gaps someone has already tripped over.
+For now, they remain open for exploration.
 
 ---
 
 <!-- _class: center -->
 
-# paths to a complete spec
+# paths to a **complete spec**
 
-![h:520](img/paths.svg)
+![h:420](img/paths.svg)
 
-<!--
-Four detectors, not four alternatives: they run in parallel and each needs something different first. LLM review needs nothing but the text. The model checker needs a formal model, which is the formalization cost. Fuzzing needs SRI. Interop tests need SRI and someone else's implementation, and they are the only detector that finds a gap the way the specification slide defined it: two compliant readers disagreeing. Everything converges on candidate gaps, and the one step no tool does is the diamond: deciding whether a candidate is a gap to close or freedom to keep as a MAY. That is a design choice, and it is where human hours go. A spec change then loops back. The exit is the complete spec, reached when the detectors come back empty, and the two edges into it carry different weight: from the sampling detectors "none found" is evidence, from the checker "none reachable" is a fact for the checked sizes. Attainable by any path, assertable only by the checker. Completeness is per version: a new feature reopens the loop. Not drawn: after a spec change the model and SRI both have to follow, or they drift; that is the maintenance cost the table warned about.
--->
+<span class="note">(*) "no gaps found" ≠ "no gaps": LLMs, fuzzing, interop and integration tests only find the gaps someone tripped over. And FV of spec completeness is only as good as the model. Model nonsense, and you're verifying nonsense.</span>
