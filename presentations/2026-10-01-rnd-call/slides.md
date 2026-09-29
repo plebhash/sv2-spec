@@ -197,3 +197,15 @@ II. **Integration Tests** catch regressions, and CI enforces they're not uninten
 III. **Interoperability Tests** map Sv2 ecosystem (3rd party implementations that potentially diverge from SRI) with regards to A and B.
 
 I and III also surface potential spec gaps, which is an argument against FV, except they only find the gaps someone has already tripped over.
+
+---
+
+<!-- _class: center -->
+
+# paths to a complete spec
+
+![h:520](img/paths.svg)
+
+<!--
+Four detectors, not four alternatives: they run in parallel and each needs something different first. LLM review needs nothing but the text. The model checker needs a formal model, which is the formalization cost. Fuzzing needs SRI. Interop tests need SRI and someone else's implementation, and they are the only detector that finds a gap the way the specification slide defined it: two compliant readers disagreeing. Everything converges on candidate gaps, and the one step no tool does is the diamond: deciding whether a candidate is a gap to close or freedom to keep as a MAY. That is a design choice, and it is where human hours go. A spec change then loops back. The exit is the complete spec, reached when the detectors come back empty, and the two edges into it carry different weight: from the sampling detectors "none found" is evidence, from the checker "none reachable" is a fact for the checked sizes. Attainable by any path, assertable only by the checker. Completeness is per version: a new feature reopens the loop. Not drawn: after a spec change the model and SRI both have to follow, or they drift; that is the maintenance cost the table warned about.
+-->

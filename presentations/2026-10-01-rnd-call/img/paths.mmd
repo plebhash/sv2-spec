@@ -1,0 +1,49 @@
+%%{init: {"theme": "base", "themeVariables": {
+  "background": "#09090b", "primaryColor": "#09090b", "primaryTextColor": "#fafafa",
+  "primaryBorderColor": "#06b6d4", "lineColor": "#22d3ee", "secondaryColor": "#09090b",
+  "tertiaryColor": "#18181b", "fontFamily": "sans-serif", "fontSize": "20px",
+  "edgeLabelBackground": "#09090b", "clusterBkg": "transparent", "clusterBorder": "transparent"
+}, "flowchart": {"curve": "basis", "nodeSpacing": 45, "rankSpacing": 60, "padding": 14}}}%%
+flowchart TD
+  spec[English spec]
+
+  subgraph p1 [ ]
+    llm[LLM review]
+  end
+  subgraph p2 [ ]
+    model[formal model] --> mc[model checker]
+  end
+  subgraph p3 [ ]
+    sri[SRI] --> fuzz[fuzzing]
+    sri --> interop[interop tests]
+    third[3rd-party impls] --> interop
+  end
+  spec -- read --> llm
+  spec -- formalize --> model
+  spec -- implement --> sri
+  spec -- implement --> third
+
+  llm --> gaps[candidate gaps]
+  mc --> gaps
+  fuzz --> gaps
+  interop --> gaps
+
+  gaps --> decide{humans decide:<br/>gap?}
+  decide -- close it --> change[spec change]
+  change --> spec
+
+  gaps -. nothing found .-> done[complete spec]
+  mc -- nothing reachable --> done
+
+  classDef grail fill:#1c1400,stroke:#f59e0b,stroke-width:3px,color:#fde68a,font-weight:bold
+  classDef fv stroke:#22d3ee,stroke-width:2.5px,color:#fafafa
+  classDef sample stroke:#71717a,color:#d4d4d8
+  classDef human stroke:#fafafa,color:#fafafa
+  class done grail
+  class model,mc fv
+  class llm,sri,third,fuzz,interop sample
+  class decide human
+  linkStyle 0,5,9 stroke:#22d3ee,stroke-width:2.5px
+  linkStyle 1,2,3,4,6,7,8,10,11 stroke:#71717a
+  linkStyle 15 stroke:#71717a,stroke-width:2px
+  linkStyle 16 stroke:#f59e0b,stroke-width:3px
