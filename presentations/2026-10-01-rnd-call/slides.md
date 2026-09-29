@@ -139,3 +139,47 @@ Formal verification demystified: not proving code correct, but writing the proto
 <!--
 Formal verification in one picture. Left: the same English text, two careful readers, two different diagrams. That is interpretation, and the difference between the diagrams is a gap. Right: the same text rewritten as a formula, a block of notation with one meaning, and the formula unfolded into every state it allows, walked by a checker with no imagination involved. The two amber spots are what it reports: an arrow that leads nowhere is a state with no next step, a gap; a node whose arrows point at clashing targets is a broken invariant, a contradiction.
 -->
+
+
+---
+
+# is formal verification worth the effort?
+
+We have **LLM**s. They read the whole spec in seconds, for cents, and they get better every day.
+
+So if clankers can hunt gaps in the English directly, **why write the spec a second time (and maintain it), in a language none of us can read (e.g.: TLA+)?**
+
+Moreover, formal verification only ever checks **small setups**. The checker walks every state, but only for sizes fixed up front (e.g.: 2 channels and 3 jobs). Anything too big, the number of states explodes and verification becomes infeasible.
+
+<!--
+State the counter-argument at full strength before answering it. This is the objection most of the room is already thinking, and Edil may raise the opposite one. No verdict here; the next slide is the table, and the room decides.
+-->
+
+---
+
+<!-- _class: dense -->
+
+# arguments **for** vs **against** formal verification
+
+| | **FV** | **no FV** |
+|---|---|---|
+| **for** | <ul><li>"no gap" becomes a fact (under small setup sizes)</li><li>a durable artefact, re-checked on every spec change (assuming the model is also updated)</li><li>writing the model surfaces ambiguity before any checking runs</li></ul> | <ul><li>KISS</li><li>comfort zone</li><li>easy to manage engineering efforts</li></ul> |
+| **against** | <ul><li>a second artefact that can drift from the English (extra maintenance burden)</li><li>none of us can write or review FV languages today</li><li>exhaustive only for small setups (e.g. 2 channels, 3 jobs); larger ones explode the state space</li><li>competes for the scarce resource: human hours</li></ul> | <ul><li>LLM = a stochastic reader, not a deterministic evaluator</li><li>"found no gap" ≠ "no gaps exist"</li><li>LLMs only "imagine" states, like humans</li><li>LLMs are prone to "hallucinations"</li><li> a closed gap can silently reopen and nobody is warned</li></ul> |
+
+<!--
+Keep it neutral on the slide; the room decides. Points to have ready if asked. The two are not substitutes: an LLM is a reader, in the same world as us on the Penrose picture; a model checker is an evaluator. LLMs lower the cost of the model path: they can draft TLA+ from the English, explain a counterexample trace in plain words, and flag where the English and the model disagree. The drift problem cuts both ways: an LLM review has no artefact to drift from, which is exactly why nothing accrues. The validate problem is identical on both paths: neither a reader nor a checker knows what we meant. Bounded checking is the honest ceiling. The checker walks every reachable state, but only for a finite instance: you pin the counts (channels, jobs in flight, queue depth) before running, and the state space multiplies with each extra actor or value, so runs go from seconds to never. "No gap found" therefore means "no gap up to those sizes"; a gap needing four jobs during a prev-hash change is outside a three-job walk. Why it is accepted anyway: the small-scope hypothesis, most protocol bugs come from interleavings of a few actors, not from large counts, and AWS found bugs at 3 to 5 nodes that years of testing at scale had missed. Confidence grows by raising the counts until nothing new appears. Unbounded claims need proofs (TLAPS), far costlier, not where Sv2 should start. Cost is the real argument against: the bottleneck is human hours, and the model path spends them up front.
+-->
+
+---
+
+# formal verification **open questions**
+
+- how much closer to completeness would FV really get us?
+- how much effort to translate the entire spec?
+- how much effort to translate parts of the spec (e.g.: subprotocols in isolation)?
+- how much effort to maintain the model (in face of spec changes)?
+- which language to use? TLA+? Quint? P? something else?
+
+I'm not in a rush to answer these questions.
+
+For now, they remain open for us to explore over the next months.

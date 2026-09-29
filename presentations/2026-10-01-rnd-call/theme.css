@@ -47,3 +47,11 @@ p:has(> .sym) { position: absolute; inset: 0; margin: 0; }
 .sym:nth-of-type(6) { top: 52%;    right: 5%;  font-size: 2.4em; transform: rotate(-14deg); }
 .sym:nth-of-type(7) { top: 30%;    left: 22%;  font-size: 2.8em; transform: rotate(10deg); }
 .sym:nth-of-type(8) { top: 30%;    right: 16%; font-size: 3em;   transform: rotate(-9deg); }
+
+table { border-collapse: collapse; font-size: .8em; background: transparent; table-layout: fixed; width: 100%; display: table; }
+th:first-child, td:first-child { width: 11%; }
+th, td { border: 1px solid var(--border); padding: .4em .7em; vertical-align: top; text-align: left; background: transparent; color: var(--fg); }
+section table tr, section table th, section table td { background: transparent !important; }
+th { color: var(--cyan-light); font-weight: 500; }
+td ul { margin: 0; padding-left: 1.1em; }
+td li { margin: 0; }
