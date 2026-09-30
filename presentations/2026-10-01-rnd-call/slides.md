@@ -262,3 +262,19 @@ For now, they remain open for exploration.
 ![h:420](img/paths.svg)
 
 <span class="note">(*) "no gaps found" ≠ "no gaps": LLMs, fuzzing, interop and integration tests only find the gaps someone tripped over. And FV of spec completeness is only as good as the model. Model nonsense, and you're verifying nonsense.</span>
+
+---
+
+# humans **in the driver seat**
+
+Whatever path we take, clankers do the reading, the drafting and the walking. **Humans decide.**
+
+- closing a gap is a **design choice**: only the community can make it
+- validating a model against what we **meant** has no oracle but us
+- nothing new here: established Computer Science methods, with AI as the **accelerator** of human agency
+
+So the bottleneck is **human bandwidth**: review, decisions, coordination. Every step of the roadmap has to be sized for it.
+
+<!--
+This is the frame for the discussion that follows. Not humans versus AI: AI does the volume, humans do the judgement, and judgement is the scarce input. The two places where a human is structurally required are the two diamonds in the story: deciding whether a candidate is a gap or a MAY, and validating that a model says what we meant. Everything else can be accelerated. The roadmap question is therefore not "what can the tools do" but "how much human judgement per week can we actually spend, and where".
+-->
