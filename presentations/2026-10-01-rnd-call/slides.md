@@ -64,8 +64,8 @@ In this talk, I want to convince you that:
 A few words to define:
 - **specification**
 - **completeness**
-- **formal verification**
 - **compliance**
+- **formal verification**
 
 ---
 
@@ -122,6 +122,30 @@ Contrast with a gap: there both readers are also "compliant", but by accident, b
 
 ---
 
+# spec **compliance**
+
+An **implementation** is **spec-compliant** when:
+**A.** it never does what the spec forbids. No broken invariants.
+**B.** it does everything the spec requires. No missing behaviour.
+
+A few techniques already established around SRI:
+
+I. **Fuzzing** maps SRI with regards to spec compliance.
+II. **Interoperability Tests** map Sv2 ecosystem (3rd party implementations that potentially diverge from SRI) with regards to spec compliance.
+III. **Integration Tests** catch regressions on SRI, and CI enforces they're not unintentionally re-introduced.
+
+All of them also surface potential spec gaps, **feeding back** into our journey towards **spec completeness**.
+
+---
+
+![bg contain](img/yin-yang.png)
+
+<!--
+Compliance and completeness are two halves of one thing. A compliant implementation is only as meaningful as the spec it complies with, and a complete spec is only as real as the implementations that follow it. Each contains a seed of the other: interop divergences between compliant implementations are where gaps show up, and closing a gap changes what compliance means. The third promise bullet, drawn.
+-->
+
+---
+
 <!-- _class: dense -->
 
 # **formal verification**
@@ -165,30 +189,6 @@ The assertion of spec completeness is only as good as the model. **Model nonsens
 And it only ever checks **small setups**: the checker walks every state, but only for sizes fixed up front (e.g.: 2 channels and 3 queued jobs).
 
 Anything too big, the number of states explodes and verification becomes **infeasible**.
-
----
-
-# spec **compliance**
-
-An **implementation** is **spec-compliant** when:
-**A.** it never does what the spec forbids. No broken invariants.
-**B.** it does everything the spec requires. No missing behaviour.
-
-A few techniques already established around SRI:
-
-I. **Fuzzing** maps SRI with regards to spec compliance.
-II. **Interoperability Tests** map Sv2 ecosystem (3rd party implementations that potentially diverge from SRI) with regards to spec compliance.
-III. **Integration Tests** catch regressions on SRI, and CI enforces they're not unintentionally re-introduced.
-
-All of them also surface potential spec gaps, **feeding back** into our journey towards **spec completeness**.
-
----
-
-![bg contain](img/yin-yang.png)
-
-<!--
-Compliance and completeness are two halves of one thing. A compliant implementation is only as meaningful as the spec it complies with, and a complete spec is only as real as the implementations that follow it. Each contains a seed of the other: interop divergences between compliant implementations are where gaps show up, and closing a gap changes what compliance means. The third promise bullet, drawn.
--->
 
 ---
 
